@@ -20,23 +20,24 @@ const WillReact = (self) => ({
 
 const WillBounceOnEdges = (self, xLimit, yLimit) => ({
 	bounce: () => {
+		let loss = 0.8;
 		if (self.location.x < 0) {
-			self.velocity.x = -self.velocity.x*0.9;
+			self.velocity.x = -self.velocity.x*loss;
 			self.location.x = 0;
 			return true;
 		}
 		if (self.location.x > xLimit) {
-			self.velocity.x = -self.velocity.x*0.9;
+			self.velocity.x = -self.velocity.x*loss;
 			self.location.x = xLimit;
 			return true;
 		}
 		if (self.location.y < 0) {
-			self.velocity.y = -self.velocity.y*0.9;
+			self.velocity.y = -self.velocity.y*loss;
 			self.location.y = 0;
 			return true;
 		}
 		if (self.location.y > yLimit) {
-			self.velocity.y = -self.velocity.y*0.9;
+			self.velocity.y = -self.velocity.y*loss;
 			self.location.y = yLimit;
 			return true;
 		}
@@ -67,29 +68,46 @@ const WillGoAroundEdges = (self, xLimit, yLimit) => ({
 });
 
 // pulser stuff
-const WillHavePulserAttached = (self) => ({
+const WillHavePulsersAttached = (self, pulsersQty) => ({
 	pulse: () => {
-		if (self.anchor == null) {
-			self.anchor = Pulser(self.size, self.size*10, self);
+		if (self.pulsers == null || self.pulsers.length == 0) {
+			self.pulsers = [];
+			for (let i = 0; i < pulsersQty; i++) {
+				self.pulsers.push(Pulser(self.size*3, self, 200, 10, 0.00008, i))
+			}
 		}
-		self.anchor.pulse();
+		for (let i = 0; i < self.pulsers.length; i++) {
+			self.pulsers[i].grow();
+			self.pulsers[i].show();
+		}
 	}
 });
 
 const WillPulse = (self) => ({
-	pulse: () => {
-		if (self.radius < self.maxRadius) {
-			self.radius += self.anchor.velocity.mag();
+	grow: () => {
+		let pR = self.radius - (self.anchor.size*self.index);
+		if (pR < 0) r = 0;
+		if (pR < self.maxRadius) { // while the last pulse is still running, keep growing
+			self.radius += 1 + self.anchor.velocity.mag(); // keep growing based on anchor's velocity
 		} else {
-			self.radius = self.anchor.size;
+			self.radius = self.anchor.size/2; // starts again
 		}
+	},
+	show: () => {
 		push();
-		noFill();
-		stroke(255);
-		ellipseMode(CENTER);
-		ellipse(self.anchor.location.x,self.anchor.location.y,self.radius,self.radius)
-		pop();
-	}	
+		translate(self.anchor.location.x, self.anchor.location.y);
+		beginShape();
+		for (let a = 0; a < (TWO_PI); a += TWO_PI/self.vertex) {
+			let n = noise(cos(a) + 1, sin(a) + 1 , self.offSet);
+			let o = map(n, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
+			let r = self.radius - (self.anchor.size*self.index) + o;
+			if (r < 0) r = 0;
+			vertex(r*cos(a),r*sin(a));
+			self.offSet += self.offSetProgression;
+		}
+		endShape(CLOSE);
+		pop();		
+	}
 })
 
 // shape stuff
@@ -97,6 +115,7 @@ const Ellipse = (self) => ({
 	show: () => {
 		push();
 		noStroke();
+		fill("#FFD788"); // temp
 		ellipseMode(CENTER);
 		ellipse(self.location.x, self.location.y, self.size, self.size)
 		pop();

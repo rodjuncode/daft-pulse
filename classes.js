@@ -1,11 +1,14 @@
 // classes
-const Pulser = (r, mR, a) => {
+const Pulser = (mR, a, v, nR, oP, i) => {
 	let self = {
-		radius: r,
 		maxRadius: mR,
 		anchor: a,
-		waveOne: [],
-		waveTwo: []
+		radius: a.size/2,
+		vertex: v,
+		noiseRange: nR,
+		offSet: random(1000),
+		offSetProgression: oP,
+		index: i
 	}
 
 	return Object.assign(
@@ -14,28 +17,13 @@ const Pulser = (r, mR, a) => {
 	)
 }
 
-/* 
-for (float a = 0; a < TWO_PI; a += TWO_PI/vertex) {
-	float r_min = size*.8;
-	float r_max = size*1.2;
-	vertexes.add(new PVector(random(r_min,r_max) * cos(a), random(r_min,r_max) * sin(a)));
-}
-
-    beginShape();
-    for (int i = 0; i < vertexes.size(); i++) { //<>//
-      vertex(vertexes.get(i).x,vertexes.get(i).y,1);
-    }
-    endShape();
-*/
-
 const Beater = (x,y,s,mV) => {
 	let self = {
 		location: createVector(x,y),
 		velocity: createVector(0,0),
 		acceleration: createVector(0.0),
 		size: s,
-		maxVelocity: mV,
-		pulser: null
+		maxVelocity: mV
 	}
 
 	return Object.assign(
@@ -43,6 +31,6 @@ const Beater = (x,y,s,mV) => {
 		Particle(self),
 		Ellipse(self),
 		WillBounceOnEdges(self, width, height),
-		WillHavePulserAttached(self),
+		WillHavePulsersAttached(self,3),
 	)
 }
