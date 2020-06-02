@@ -10,12 +10,12 @@ function setup() {
 function draw() {
 	background(50);
 	if (beaters.length < maxBeaters) {
-		b = Beater(width/2, height/2, random(20,30))
-		//b.reactTo(createVector(random(-5,5),0));
+		b = Beater(width/2, height/2, random(30,60),1000,random(5,20));
+		b.reactTo(createVector(random(-5,5),0));
 		beaters.push(b);
 	}
 	for (let b of beaters) {
-		//b.reactTo(gravity);
+		b.reactTo(gravity);
 		
 		b.move(); 
 		b.bounce(); 
@@ -34,6 +34,6 @@ function draw() {
 function mouseClicked(event) {
 	// shake
 	for (let b of beaters) {
-		//b.reactTo(createVector(random(-5,5),random(-20,-40)));
+		b.reactTo(createVector(random(-5,5),random(-20,-40)));
 	}
 }

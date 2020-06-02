@@ -3,7 +3,7 @@ const Pulser = (mR, a, v, nR, oP, i) => {
 	let self = {
 		maxRadius: mR,
 		anchor: a,
-		radius: a.size/2,
+		radius: 0,
 		vertex: v,
 		noiseRange: nR,
 		offSet: random(1000),
@@ -31,6 +31,6 @@ const Beater = (x,y,s,mV) => {
 		Particle(self),
 		Ellipse(self),
 		WillBounceOnEdges(self, width, height),
-		WillHavePulsersAttached(self,3),
+		WillHavePulsersAttached(self,20),
 	)
 }

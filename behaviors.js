@@ -73,7 +73,7 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 		if (self.pulsers == null || self.pulsers.length == 0) {
 			self.pulsers = [];
 			for (let i = 0; i < pulsersQty; i++) {
-				self.pulsers.push(Pulser(self.size*3, self, 200, 10, 0.00008, i))
+				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 200, 10, 0.00008, i);
 			}
 		}
 		for (let i = 0; i < self.pulsers.length; i++) {
@@ -85,12 +85,12 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 
 const WillPulse = (self) => ({
 	grow: () => {
-		let pR = self.radius - (self.anchor.size*self.index);
-		if (pR < 0) r = 0;
-		if (pR < self.maxRadius) { // while the last pulse is still running, keep growing
-			self.radius += 1 + self.anchor.velocity.mag(); // keep growing based on anchor's velocity
+		let pR = self.radius - (self.anchor.size/2*self.index);
+		//console.log(self.index + ":" + pR);
+		if (pR <= self.maxRadius) { 
+			self.radius += 0.5 + self.anchor.velocity.mag(); // keep growing based on anchor's velocity
 		} else {
-			self.radius = self.anchor.size/2; // starts again
+			self.radius = (self.index-1)*self.anchor.size/2; // starts again, -radius
 		}
 	},
 	show: () => {
@@ -98,12 +98,13 @@ const WillPulse = (self) => ({
 		translate(self.anchor.location.x, self.anchor.location.y);
 		beginShape();
 		for (let a = 0; a < (TWO_PI); a += TWO_PI/self.vertex) {
-			let n = noise(cos(a) + 1, sin(a) + 1 , self.offSet);
-			let o = map(n, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
-			let r = self.radius - (self.anchor.size*self.index) + o;
-			if (r < 0) r = 0;
-			vertex(r*cos(a),r*sin(a));
-			self.offSet += self.offSetProgression;
+			let _noise = noise(cos(a) + 1, sin(a) + 1 , self.offSet);
+			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
+			let _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
+			if (_radius > 0) {
+				vertex(_radius*cos(a),_radius*sin(a));
+				self.offSet += self.offSetProgression;
+			}	
 		}
 		endShape(CLOSE);
 		pop();		
