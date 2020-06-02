@@ -73,7 +73,7 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 		if (self.pulsers == null || self.pulsers.length == 0) {
 			self.pulsers = [];
 			for (let i = 0; i < pulsersQty; i++) {
-				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 200, 10, 0.00008, i);
+				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 100, 10, 0.00008, i);
 			}
 		}
 		for (let i = 0; i < self.pulsers.length; i++) {
@@ -83,12 +83,11 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 	}
 });
 
-const WillPulse = (self) => ({
+const WillPulse = (self, speed) => ({
 	grow: () => {
 		let pR = self.radius - (self.anchor.size/2*self.index);
-		//console.log(self.index + ":" + pR);
 		if (pR <= self.maxRadius) { 
-			self.radius += 0.5 + self.anchor.velocity.mag(); // keep growing based on anchor's velocity
+			self.radius += speed + self.anchor.velocity.mag(); // keep growing based on anchor's velocity
 		} else {
 			self.radius = (self.index-1)*self.anchor.size/2; // starts again, -radius
 		}
@@ -98,7 +97,7 @@ const WillPulse = (self) => ({
 		translate(self.anchor.location.x, self.anchor.location.y);
 		beginShape();
 		for (let a = 0; a < (TWO_PI); a += TWO_PI/self.vertex) {
-			let _noise = noise(cos(a) + 1, sin(a) + 1 , self.offSet);
+			let _noise = noise(cos(a) + 1, sin(a) + 1, self.offSet);
 			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
 			let _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
 			if (_radius > 0) {
@@ -115,8 +114,6 @@ const WillPulse = (self) => ({
 const Ellipse = (self) => ({
 	show: () => {
 		push();
-		noStroke();
-		fill("#FFD788"); // temp
 		ellipseMode(CENTER);
 		ellipse(self.location.x, self.location.y, self.size, self.size)
 		pop();

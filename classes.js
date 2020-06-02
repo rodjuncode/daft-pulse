@@ -13,7 +13,7 @@ const Pulser = (mR, a, v, nR, oP, i) => {
 
 	return Object.assign(
 		self,
-		WillPulse(self)
+		WillPulse(self, 1.5)
 	)
 }
 
@@ -31,6 +31,6 @@ const Beater = (x,y,s,mV) => {
 		Particle(self),
 		Ellipse(self),
 		WillBounceOnEdges(self, width, height),
-		WillHavePulsersAttached(self,20),
+		WillHavePulsersAttached(self,8),
 	)
 }
