@@ -7,7 +7,10 @@ A p5.js sketch made while listening to Daft Punk (it's also my first p5.js sketc
 * Making the Pulsers react to the beat of a MP3 file would be cool
 
 ## Current version
-You may check the current working version on https://rodjuncode.github.io/daftpunk-tribute/
+You may check the current working version on https://rodjuncode.github.io/daftpunk-tribute/.
+
+* Click to **START**, then click to **SHAKE**;
+* Double click to **RESET**.
 
 ## ROADMAP (updated on jun-02-2020)
 * I need to work on a separate branch to customize the code, so it can look more like the original idea of the video. The master branch keeps a general code;
