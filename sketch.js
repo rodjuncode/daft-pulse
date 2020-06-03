@@ -1,5 +1,5 @@
 let beaters = [];
-let maxBeaters = 1;
+let maxBeaters = 20;
 let gravity;
 let beholdMode = true;
 let forcesOn = false;
@@ -31,7 +31,7 @@ function draw() {
 }
 
 function init() {
-	b = Beater(width/2, height/2,random(10,60),1000,random(5,20));
+	b = Beater(random(width),random(height),random(10,60),1000,random(5,20));
 	if (forcesOn) b.reactTo(createVector(random(-5,5),0));
 	beaters.push(b);	
 }
