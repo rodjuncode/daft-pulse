@@ -73,7 +73,7 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 		if (self.pulsers == null || self.pulsers.length == 0) {
 			self.pulsers = [];
 			for (let i = 0; i < pulsersQty; i++) {
-				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 100, 10, 0.00008, i);
+				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 100, 10, 0.00008, self.color, i);
 			}
 		}
 		for (let i = 0; i < self.pulsers.length; i++) {
@@ -96,6 +96,8 @@ const WillPulse = (self, speed) => ({
 		push();
 		translate(self.anchor.location.x, self.anchor.location.y);
 		beginShape();
+		noFill();
+		stroke(self.color);
 		for (let a = 0; a < (TWO_PI); a += TWO_PI/self.vertex) {
 			let _noise = noise(cos(a) + 1, sin(a) + 1, self.offSet);
 			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
@@ -111,9 +113,13 @@ const WillPulse = (self, speed) => ({
 })
 
 // shape stuff
-const Ellipse = (self) => ({
+const Ellipse = (self, c) => ({
 	show: () => {
 		push();
+		if (c != null) {
+			fill(c);
+			stroke(c);
+		} 
 		ellipseMode(CENTER);
 		ellipse(self.location.x, self.location.y, self.size, self.size)
 		pop();

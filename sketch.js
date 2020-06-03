@@ -1,20 +1,34 @@
 let beaters = [];
-let maxBeaters = 20;
+let beatersQty;
 let gravity;
 let beholdMode = true;
 let forcesOn = false;
 
 function setup() {
 	createCanvas(400, 400);
+	colorMode(HSB,360,100,100);
 	gravity = createVector(0,1);
+	
+	interactButton = createButton("Interact");
+	interactButton.mousePressed(interact);
+
+	resetButton = createButton("Reset");
+	resetButton.mousePressed(reset);
+
+	beatersQtySlider = createSlider(1,50,10);
 }
 
 function draw() {
-	background(50);
-	stroke(255);
+	background(18);
 
-	if (beaters.length < maxBeaters) {
+	beatersQty = beatersQtySlider.value();
+
+	if (beaters.length < beatersQty) {
 		init();
+	} else {
+		while (beaters.length > beatersQty) {
+			beaters.splice(-1,1);
+		}
 	}
 	for (let b of beaters) {
 		if (forcesOn) b.reactTo(gravity);
@@ -22,7 +36,6 @@ function draw() {
 		b.bounce(); 
 		// config and run pulse
 		push();
-		noFill();
 		b.pulse();
 		pop();
 		// now show the body
@@ -31,22 +44,19 @@ function draw() {
 }
 
 function init() {
-	b = Beater(random(width),random(height),random(10,60),1000,random(5,20));
+	b = Beater(random(width),random(height),random(10,60),color(random(360),100,100),1000);
 	if (forcesOn) b.reactTo(createVector(random(-5,5),0));
 	beaters.push(b);	
 }
 
 function reset() {
+	beaters = []
+	beholdMode = true;
 	forcesOn = false;	
 	init();
 }
 
-function doubleClicked() {
-	beaters = [];
-	beholdMode = true;
-	reset();
-}
-function mouseClicked(event) {
+function interact() {
 	if (beholdMode) {
 		forcesOn = true;
 		beholdMode = false;

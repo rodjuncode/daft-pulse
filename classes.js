@@ -1,5 +1,5 @@
 // classes
-const Pulser = (mR, a, v, nR, oP, i) => {
+const Pulser = (mR, a, v, nR, oP, c, i) => {
 	let self = {
 		maxRadius: mR,
 		anchor: a,
@@ -8,6 +8,7 @@ const Pulser = (mR, a, v, nR, oP, i) => {
 		noiseRange: nR,
 		offSet: random(1000),
 		offSetProgression: oP,
+		color : c,
 		index: i
 	}
 
@@ -17,19 +18,20 @@ const Pulser = (mR, a, v, nR, oP, i) => {
 	)
 }
 
-const Beater = (x,y,s,mV) => {
+const Beater = (x,y,s,c,mV) => {
 	let self = {
 		location: createVector(x,y),
 		velocity: createVector(0,0),
 		acceleration: createVector(0.0),
 		size: s,
-		maxVelocity: mV
+		color: c,
+		maxVelocity: mV,
 	}
 
 	return Object.assign(
 		self,
 		Particle(self),
-		Ellipse(self),
+		Ellipse(self,self.color),
 		WillBounceOnEdges(self, width, height),
 		WillHavePulsersAttached(self,8),
 	)

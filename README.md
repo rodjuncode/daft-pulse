@@ -13,8 +13,8 @@ You may check the current working version on https://rodjuncode.github.io/daft-p
 
 ## Wishlist
 * I need to work on a separate branch to customize the code, so it can look more like the original idea of the video. The master branch keeps a general code;
-* I want to add more controls to the published sketch, so people can play with it;
-* This sketch needs COLORS;
+* ~~I want to add more controls to the published sketch, so people can play with it;~~
+* ~~This sketch needs COLORS;~~
 * The default styles for buttons and controls don't amuse me. Maybe fooling around with the CSS file to make them look like the p5js.org page would be a nice idea;
 
 ## Damn bugs!
