@@ -1,6 +1,5 @@
-# daftpunk-tribute
+# daft-pulse (a Daft Punk tribute)
 A p5.js sketch made while listening to Daft Punk (it's also my first p5.js sketch ever).
-
 
 ## Here is what I want to do
 * I want to create a Pulser, inspired by this: https://youtu.be/KOpvLGlgjyw?t=191
@@ -12,8 +11,9 @@ You may check the current working version on https://rodjuncode.github.io/daftpu
 * Click to **START**, then click to **SHAKE**;
 * Double click to **RESET**.
 
-## ROADMAP (updated on jun-02-2020)
+## ROADMAP (updated on jun-03-2020)
 * I need to work on a separate branch to customize the code, so it can look more like the original idea of the video. The master branch keeps a general code;
+* I want to add more controls to the published sketch, so people can play with it;
 * Fix BUG#0001: for some reason, inner pulses have more noise on their generation. Ideally, the noise should be the same across all rings;
 
 ## PS
