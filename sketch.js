@@ -40,6 +40,7 @@ function draw() {
 		pop();
 		// now show the body
 		b.show();	
+		
 	}
 }
 

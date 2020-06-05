@@ -95,10 +95,10 @@ const WillPulse = (self, speed) => ({
 	show: () => {
 		push();
 		translate(self.anchor.location.x, self.anchor.location.y);
-		beginShape();
 		noFill();
 		stroke(self.color);
-		for (let a = 0; a < (TWO_PI); a += TWO_PI/self.vertex) {
+		beginShape();
+		for (let a = 0; a < TWO_PI; a += TWO_PI/self.vertex) {
 			let _noise = noise(cos(a) + 1, sin(a) + 1, self.offSet);
 			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
 			let _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
