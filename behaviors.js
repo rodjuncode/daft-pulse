@@ -92,23 +92,26 @@ const WillPulse = (self, speed) => ({
 			self.radius = (self.index-1)*self.anchor.size/2; // starts again, -radius
 		}
 	},
-	show: () => {
-		push();
-		translate(self.anchor.location.x, self.anchor.location.y);
-		noFill();
-		stroke(self.color);
-		beginShape();
-		for (let a = 0; a < TWO_PI; a += TWO_PI/self.vertex) {
+	show: (where) => {
+		if (where == null) {
+			where = this;
+		}		
+		where.push();
+		where.translate(self.anchor.location.x, self.anchor.location.y);
+		where.noFill();
+		where.stroke(self.color);
+		where.beginShape();
+		for (let a = 0; a < TWO_PI-TWO_PI/self.vertex; a += TWO_PI/self.vertex) {
 			let _noise = noise(cos(a) + 1, sin(a) + 1, self.offSet);
 			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
 			let _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
 			if (_radius > 0) {
-				vertex(_radius*cos(a),_radius*sin(a));
+				where.vertex(_radius*cos(a),_radius*sin(a));
 				self.offSet += self.offSetProgression;
 			}	
 		}
-		endShape(CLOSE);
-		pop();		
+		where.endShape(CLOSE);
+		where.pop();		
 	}
 })
 
