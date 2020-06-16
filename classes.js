@@ -1,12 +1,12 @@
 // classes
-const Pulser = (mR, a, v, nR, oP, c, i, offset) => {
+const Pulser = (mR, a, v, nR, oP, c, i) => {
 	let self = {
 		maxRadius: mR,
 		anchor: a,
 		radius: 0,
 		vertex: v,
 		noiseRange: nR,
-		offSet: offset,// random(1000),
+		offSet: random(1000),
 		offSetProgression: oP,
 		color : c,
 		index: i
