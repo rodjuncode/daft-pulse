@@ -116,7 +116,7 @@ const WillPulse = (self, speed) => ({
 		where.stroke(self.color);
 		where.beginShape();
 
-		var numVertex = 400 / beaters.length;
+		var numVertex = Math.ceil(400 / beaters.length);
 
 		//for (var a = 0; a < TWO_PI-TWO_PI/self.vertex; a += TWO_PI/self.vertex) {
 		for (var a = -PI; a < PI; a += TWO_PI/numVertex) {
