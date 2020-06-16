@@ -15,7 +15,7 @@ function setup() {
 	resetButton = createButton("Reset");
 	resetButton.mousePressed(reset);
 
-	beatersQtySlider = createSlider(1,50,10);
+	beatersQtySlider = createSlider(1,30,10);
 }
 
 function draw() {
@@ -30,17 +30,25 @@ function draw() {
 			beaters.splice(-1,1);
 		}
 	}
+
+	noStroke();
 	for (let b of beaters) {
-		if (forcesOn) b.reactTo(gravity);
-		b.move(); 
-		b.bounce(); 
-		// config and run pulse
-		push();
-		b.pulse();
-		pop();
+		if (forcesOn) {
+			b.reactTo(gravity);
+		    b.move(); 
+		    b.bounce(); 
+		}
+		
 		// now show the body
 		b.show();	
 		
+	}
+
+	noFill();
+	for (let b of beaters) {
+
+		// config and run pulse
+		b.pulse();
 	}
 }
 
