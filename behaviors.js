@@ -1,5 +1,14 @@
 // # behaviors
 
+//fast sine approximation, only valid between -pi and pi
+function fastSin(angle)
+{
+	var B = 4 / PI;
+	var C = -4 / (PI*PI);
+
+	return -(B * angle + C *angle * ((angle < 0) ? -angle : angle));
+} 
+
 // basic stuff
 const WillMove = (self) => ({
 	move: () => {
@@ -76,10 +85,14 @@ const WillHavePulsersAttached = (self, pulsersQty) => ({
 				self.pulsers[i] = Pulser(self.size/2*(pulsersQty-1), self, 100, 10, 0.00008, self.color, i);
 			}
 		}
+		
+		push();
+		translate(self.location.x, self.location.y);
 		for (let i = 0; i < self.pulsers.length; i++) {
 			self.pulsers[i].grow();
 			self.pulsers[i].show();
 		}
+		pop();
 	}
 });
 
@@ -93,25 +106,34 @@ const WillPulse = (self, speed) => ({
 		}
 	},
 	show: (where) => {
+
 		if (where == null) {
 			where = this;
-		}		
-		where.push();
-		where.translate(self.anchor.location.x, self.anchor.location.y);
-		where.noFill();
+		}	
+		//where.push();
+		//where.translate(self.anchor.location.x, self.anchor.location.y);
+		//where.noFill();
 		where.stroke(self.color);
 		where.beginShape();
-		for (let a = 0; a < TWO_PI-TWO_PI/self.vertex; a += TWO_PI/self.vertex) {
-			let _noise = noise(cos(a) + 1, sin(a) + 1, self.offSet);
-			let _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
-			let _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
+
+		var numVertex = Math.ceil(400 / beaters.length);
+
+		//for (var a = 0; a < TWO_PI-TWO_PI/self.vertex; a += TWO_PI/self.vertex) {
+		for (var a = -PI; a < PI; a += TWO_PI/numVertex) {
+
+			var cosAngle = (a + (PI/2)); 
+		    if (cosAngle > PI) cosAngle -= TWO_PI;
+
+			var _noise = noise(fastSin(cosAngle) + 1, fastSin(a) + 1, self.offSet); //noise(cos(a) + 1, sin(a) + 1, self.offSet);
+			var _offset = map(_noise, 0, 1, -self.radius/self.noiseRange, self.radius/self.noiseRange);
+			var _radius = self.radius - (self.anchor.size/2*self.index) + _offset;
 			if (_radius > 0) {
-				where.vertex(_radius*cos(a),_radius*sin(a));
+				where.vertex(_radius*fastSin(cosAngle), _radius*fastSin(a));
 				self.offSet += self.offSetProgression;
 			}	
 		}
 		where.endShape(CLOSE);
-		where.pop();		
+		//where.pop();		
 	}
 })
 
@@ -121,7 +143,7 @@ const Ellipse = (self, c) => ({
 		push();
 		if (c != null) {
 			fill(c);
-			stroke(c);
+			//stroke(c);
 		} 
 		ellipseMode(CENTER);
 		ellipse(self.location.x, self.location.y, self.size, self.size)
@@ -135,7 +157,7 @@ const Rectangle = (self) => ({
 		noStroke();
 		rectMode(CENTER);
 		rect(self.location.x, self.location.y, self.size, self.size)
-		pop();
+	    pop();
 	}
 });
 

@@ -33,6 +33,6 @@ const Beater = (x,y,s,c,mV) => {
 		Particle(self),
 		Ellipse(self,self.color),
 		WillBounceOnEdges(self, width, height),
-		WillHavePulsersAttached(self,8),
+		WillHavePulsersAttached(self,6),
 	)
 }
